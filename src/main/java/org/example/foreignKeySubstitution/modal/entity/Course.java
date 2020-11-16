@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * class
+ * Course 课程
  * @author ydy
  */
 @Data
@@ -12,14 +12,9 @@ public class Course implements Serializable {
     private Integer id;
 
     /**
-     * 年级
+     * 课程名称
      */
-    private Byte level;
-
-    /**
-     * 序号
-     */
-    private Integer serial;
+    private String name;
 
     private static final long serialVersionUID = 1L;
 }

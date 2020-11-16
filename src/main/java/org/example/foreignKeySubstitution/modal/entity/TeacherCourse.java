@@ -12,14 +12,14 @@ public class TeacherCourse implements Serializable {
     private Integer id;
 
     /**
-     * 年级
+     * 老师序号
      */
-    private Byte level;
+    private Integer teacherId;
 
     /**
-     * 序号
+     * 课程序号
      */
-    private Integer serial;
+    private Integer courseId;
 
     private static final long serialVersionUID = 1L;
 }

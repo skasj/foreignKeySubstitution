@@ -1,7 +1,9 @@
 package org.example.foreignKeySubstitution.mapper.baseMapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.example.foreignKeySubstitution.modal.entity.Course;
 
+@Mapper
 public interface CourseMapper {
     int deleteByPrimaryKey(Integer id);
 

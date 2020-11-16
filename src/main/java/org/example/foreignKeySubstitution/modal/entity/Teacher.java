@@ -12,14 +12,14 @@ public class Teacher implements Serializable {
     private Integer id;
 
     /**
-     * 年级
+     * 名字
      */
-    private Byte level;
+    private String name;
 
     /**
-     * 序号
+     * 手机号
      */
-    private Integer serial;
+    private String telephone;
 
     private static final long serialVersionUID = 1L;
 }
