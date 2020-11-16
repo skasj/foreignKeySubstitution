@@ -9,7 +9,7 @@ public class ExamProvider implements ProviderMethodResolver {
     public String insert(){
         return new SQL().INSERT_INTO(tableName)
                 .VALUES("id","#{record.id}")
-                .VALUES("context","#{record.context}").toString();
+                .VALUES("context","#{record.context, jdbcType=VARCHAR, typeHandler=org.example.foreignKeySubstitution.mapper.handles.JsonTypeHandler}").toString();
     }
 
     public String findById(){
