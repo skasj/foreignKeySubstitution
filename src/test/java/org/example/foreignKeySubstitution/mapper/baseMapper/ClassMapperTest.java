@@ -7,12 +7,13 @@ import org.example.foreignKeySubstitution.modal.entity.Class;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 public class ClassMapperTest extends MapperBaseTest {
 
-    @Autowired
+    @Resource
     private ClassMapper classMapper;
 
     private Class aClass;
