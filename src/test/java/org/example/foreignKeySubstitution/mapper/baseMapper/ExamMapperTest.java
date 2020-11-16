@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Rollback
