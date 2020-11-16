@@ -11,4 +11,8 @@ public class ExamProvider implements ProviderMethodResolver {
                 .VALUES("id","#{record.id}")
                 .VALUES("context","#{record.context}").toString();
     }
+
+    public String findById(){
+        return new SQL().SELECT("id","context").FROM(tableName).WHERE("id = #{id}").toString();
+    }
 }

@@ -2,6 +2,7 @@ package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
 import org.example.foreignKeySubstitution.modal.entity.Exam;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -25,5 +26,12 @@ public class ExamMapperTest extends MapperBaseTest {
     @Test
     public void insert() {
         examMapper.insert(record);
+    }
+
+    @Test
+    public void findById() {
+        examMapper.insert(record);
+        Exam examRecord = examMapper.findById(record.getId());
+        Assert.assertEquals(record,examRecord);
     }
 }
