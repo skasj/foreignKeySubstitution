@@ -9,5 +9,5 @@ public interface TeacherCourseService {
     /**
      * 1查询条件集中在一个表上的情况, 其他字段只需要填充
      */
-    TeacherCourseDTO selectByIdList(List<Object> idList);
+    List<TeacherCourseDTO> selectByIdList(List<Object> idList);
 }
