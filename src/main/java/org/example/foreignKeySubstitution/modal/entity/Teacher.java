@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.foreignKeySubstitution.annotation.TableColumn;
+import org.example.foreignKeySubstitution.annotation.TableName;
 
 /**
  * class
@@ -14,6 +15,7 @@ import org.example.foreignKeySubstitution.annotation.TableColumn;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName("teacher")
 public class Teacher implements Serializable {
 
     @TableColumn(columnName = "id")
