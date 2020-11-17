@@ -12,11 +12,11 @@ public class SelectSQLAssembler {
     public static String selectByIdList(List<Object> idList, String tableName, Class<?> resultType) {
         Joiner joiner = Joiner.on("','");
         Field[] declaredFields = resultType.getDeclaredFields();
-        String[] columnNameList = (String[]) Arrays.stream(declaredFields)
+        return new SQL().SELECT(Arrays.stream(declaredFields)
                 .filter(f -> !"serialVersionUID".equals(f.getName()))
                 .map(f -> NameTransferUitl.humpToUnderline(f.getName()))
-                .toArray();
-        return new SQL().SELECT(columnNameList)
+                .distinct()
+                .toArray(String[]::new))
                 .FROM(tableName)
                 .WHERE("id in ('" + joiner.join(idList) + "')")
                 .toString();

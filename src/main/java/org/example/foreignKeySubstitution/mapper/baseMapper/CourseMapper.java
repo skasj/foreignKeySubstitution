@@ -7,7 +7,7 @@ import java.util.List;
 public interface CourseMapper {
     int deleteByIdList(List<Integer> idList);
 
-    int insert(Course record, String userName);
+    int insert(Course record);
 
     Course selectByPrimaryKey(Integer id);
 

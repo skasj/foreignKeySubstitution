@@ -14,11 +14,11 @@ public interface CourseMysqlMapper extends CourseMapper {
     @DeleteProvider(type = CourseProvider.class, method = "deleteByIdList")
     int deleteByIdList(@Param("idList") List<Integer> idList);
 
-    @InsertProvider(type = InsertSQLAssembler.class, method = "insertRecord")
-    int insert(@Param("record") Course record, @Param("tableName") String tableName);
+    @InsertProvider(type = CourseProvider.class, method = "insert")
+    int insert(@Param("record") Course record);
 
-    @Select("select id,name from course where id = #{record.id}")
-    Course selectByPrimaryKey(Integer id);
+    @Select("select id,name from course where id = #{id}")
+    Course selectByPrimaryKey(@Param("id") Integer id);
 
     @SelectProvider(type = CourseProvider.class, method = "selectByIdList")
     List<Course> selectByIdList(@Param("idList") List<Integer> idList);

@@ -32,23 +32,23 @@ public class CourseMysqlMapperTest extends MapperBaseTest {
 
     @Test
     public void selectByPrimaryKey() {
-        mapper.insert(record1, "course");
+        mapper.insert(record1);
         Object fromDB = mapper.selectByPrimaryKey(record1.getId());
         Assert.assertEquals(record1, fromDB);
     }
 
     @Test
     public void selectByIdList() {
-        mapper.insert(record1, "course");
-        mapper.insert(record2, "course");
+        mapper.insert(record1);
+        mapper.insert(record2);
         List<Course> courseList = mapper.selectByIdList(Arrays.asList(record1.getId(), record2.getId()));
         Assert.assertEquals(2, courseList.size());
     }
 
     @Test
     public void deleteByIdList() {
-        mapper.insert(record1, "course");
-        mapper.insert(record2, "course");
+        mapper.insert(record1);
+        mapper.insert(record2);
         List<Course> courseList = mapper.selectByIdList(Arrays.asList(record1.getId(), record2.getId()));
         Assert.assertEquals(2, courseList.size());
         mapper.deleteByIdList(Arrays.asList(record1.getId(), record2.getId()));

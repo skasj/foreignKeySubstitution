@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 public class InsertSQLAssembler {
 
-    public String insertRecord(Object record, String tableName) {
+    public static String insertRecord(Object record, String tableName) {
         // todo 增加本地缓存 或者 使用享元模式
         SQL sql = new SQL().INSERT_INTO(tableName);
         Class<?> aClass = record.getClass();

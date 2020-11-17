@@ -18,8 +18,8 @@ public interface TeacherMysqlMapper extends TeacherMapper {
     Teacher selectByPrimaryKey(Integer id);
 
     @SelectProvider(type = TeacherProvider.class, method = "selectByIdList")
-    List<Teacher> selectByIdList(List<Object> idList);
+    List<Teacher> selectByIdList(@Param("idList")List<Object> idList);
 
-//    @DeleteProvider(type = TeacherProvider.class, method = "deleteByIdList")
-    int deleteByIdList(List<Object> idList);
+    @DeleteProvider(type = TeacherProvider.class, method = "deleteByIdList")
+    int deleteByIdList(@Param("idList") List<Object> idList);
 }
