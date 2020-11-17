@@ -26,7 +26,7 @@ public class TeacherMapperTest extends MapperBaseTest {
 
     @Test
     public void selectByPrimaryKey() {
-        mapper.insert(record1,"teacher");
+        mapper.insert(record1);
         Teacher fromDB = mapper.selectByPrimaryKey(record1.getId());
         Assert.assertEquals(record1,fromDB);
     }

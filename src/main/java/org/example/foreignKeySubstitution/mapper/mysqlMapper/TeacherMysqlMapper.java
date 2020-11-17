@@ -5,15 +5,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
-import org.example.foreignKeySubstitution.mapper.providerUtils.InsertSQLAssembler;
+import org.example.foreignKeySubstitution.mapper.baseProvider.TeacherProvider;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
 @Mapper
 public interface TeacherMysqlMapper extends TeacherMapper {
 //    int deleteByPrimaryKey(Integer id);
 
-    @InsertProvider(type = InsertSQLAssembler.class,method = "insertRecord")
-    int insert(@Param("record") Teacher record,@Param("tableName") String tableName);
+    @InsertProvider(type = TeacherProvider.class, method = "insert")
+    int insert(@Param("record") Teacher record);
 
 //    int insertSelective(Teacher record);
 
