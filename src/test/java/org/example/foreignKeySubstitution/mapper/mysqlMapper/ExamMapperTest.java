@@ -1,7 +1,8 @@
-package org.example.foreignKeySubstitution.mapper.baseMapper;
+package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
 import org.example.foreignKeySubstitution.constants.ExamRequestType;
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
+import org.example.foreignKeySubstitution.mapper.baseMapper.ExamMapper;
 import org.example.foreignKeySubstitution.modal.entity.Exam;
 import org.example.foreignKeySubstitution.modal.entity.ExamRequest;
 import org.junit.Assert;

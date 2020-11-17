@@ -1,6 +1,7 @@
-package org.example.foreignKeySubstitution.mapper.baseMapper;
+package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
+import org.example.foreignKeySubstitution.mapper.baseMapper.ClassMapper;
 import org.example.foreignKeySubstitution.modal.entity.Class;
 import org.junit.Assert;
 import org.junit.Before;

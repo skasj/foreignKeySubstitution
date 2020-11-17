@@ -1,12 +1,11 @@
 package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
 import org.example.foreignKeySubstitution.mapper.baseProvider.TeacherProvider;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
+
+import java.util.List;
 
 @Mapper
 public interface TeacherMysqlMapper extends TeacherMapper {
@@ -15,12 +14,12 @@ public interface TeacherMysqlMapper extends TeacherMapper {
     @InsertProvider(type = TeacherProvider.class, method = "insert")
     int insert(@Param("record") Teacher record);
 
-//    int insertSelective(Teacher record);
-
     @Select("select id,name,telephone from teacher where id = #{record.id}")
     Teacher selectByPrimaryKey(Integer id);
 
-//    int updateByPrimaryKeySelective(Teacher record);
+    @SelectProvider(type = TeacherProvider.class, method = "selectByIdList")
+    List<Teacher> selectByIdList(List<Object> idList);
 
-//    int updateByPrimaryKey(Teacher record);
+//    @DeleteProvider(type = TeacherProvider.class, method = "deleteByIdList")
+    int deleteByIdList(List<Object> idList);
 }
