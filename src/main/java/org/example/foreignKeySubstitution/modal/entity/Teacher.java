@@ -15,22 +15,18 @@ import org.example.foreignKeySubstitution.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("teacher")
 public class Teacher implements Serializable {
 
-    @TableColumn(columnName = "id")
     private Integer id;
 
     /**
      * 名字
      */
-    @TableColumn(columnName = "name")
     private String name;
 
     /**
      * 手机号
      */
-    @TableColumn(columnName = "telephone")
     private String telephone;
 
     private static final long serialVersionUID = 1L;

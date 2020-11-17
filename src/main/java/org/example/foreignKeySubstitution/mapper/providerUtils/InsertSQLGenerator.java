@@ -14,7 +14,7 @@ public class InsertSQLGenerator {
         Class<?> aClass = record.getClass();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (Field field : declaredFields) {
-            if (field.isAnnotationPresent(TableColumn.class))
+            if (!"serialVersionUID".equals(field.getName()))
                 sql.VALUES(humpToUnderline(field.getName()), "#{record." + field.getName() + "}");
         }
         return sql.toString();

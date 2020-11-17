@@ -1,8 +1,11 @@
-package org.example.foreignKeySubstitution.mapper.baseMapper;
+package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.example.foreignKeySubstitution.mapper.baseMapper.CourseMapper;
 import org.example.foreignKeySubstitution.modal.entity.Course;
 
-public interface CourseMapper {
+@Mapper
+public interface CourseMysqlMapper extends CourseMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Course record);
