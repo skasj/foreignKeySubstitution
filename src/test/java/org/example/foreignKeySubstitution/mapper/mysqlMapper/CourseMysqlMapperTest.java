@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
 
 public class CourseMysqlMapperTest extends MapperBaseTest {
 
@@ -20,7 +22,7 @@ public class CourseMysqlMapperTest extends MapperBaseTest {
     @Before
     public void init(){
         record1 = new Course(3,"数学");
-        record1 = new Course(4,"语文");
+        record2 = new Course(4,"语文");
     }
 
     @Test
@@ -30,8 +32,27 @@ public class CourseMysqlMapperTest extends MapperBaseTest {
 
     @Test
     public void selectByPrimaryKey() {
-        mapper.insert(record1,"course");
+        mapper.insert(record1, "course");
         Object fromDB = mapper.selectByPrimaryKey(record1.getId());
-        Assert.assertEquals(record1,fromDB);
+        Assert.assertEquals(record1, fromDB);
+    }
+
+    @Test
+    public void selectByIdList() {
+        mapper.insert(record1, "course");
+        mapper.insert(record2, "course");
+        List<Course> courseList = mapper.selectByIdList(Arrays.asList(record1.getId(), record2.getId()));
+        Assert.assertEquals(2, courseList.size());
+    }
+
+    @Test
+    public void deleteByIdList() {
+        mapper.insert(record1, "course");
+        mapper.insert(record2, "course");
+        List<Course> courseList = mapper.selectByIdList(Arrays.asList(record1.getId(), record2.getId()));
+        Assert.assertEquals(2, courseList.size());
+        mapper.deleteByIdList(Arrays.asList(record1.getId(), record2.getId()));
+        courseList = mapper.selectByIdList(Arrays.asList(record1.getId(), record2.getId()));
+        Assert.assertEquals(0, courseList.size());
     }
 }

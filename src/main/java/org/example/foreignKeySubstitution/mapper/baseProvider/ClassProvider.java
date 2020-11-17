@@ -1,6 +1,5 @@
 package org.example.foreignKeySubstitution.mapper.baseProvider;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -18,11 +17,4 @@ public class ClassProvider implements ProviderMethodResolver {
                 .VALUES("serial", "#{record.serial}")
                 .toString();
     }
-
-//    public String selectByPrimaryKey(@Param("id") Integer id) {
-//        return new SQL().SELECT("id,level,serial")
-//                .FROM(tableName)
-//                .WHERE("id=#{id}")
-//                .toString();
-//    }
 }

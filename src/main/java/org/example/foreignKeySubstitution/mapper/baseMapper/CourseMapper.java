@@ -2,16 +2,15 @@ package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.modal.entity.Course;
 
+import java.util.List;
+
 public interface CourseMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByIdList(List<Integer> idList);
 
-    int insert(Course record,String userName);
-
-    int insertSelective(Course record);
+    int insert(Course record, String userName);
 
     Course selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Course record);
+    List<Course> selectByIdList(List<Integer> idList);
 
-    int updateByPrimaryKey(Course record);
 }

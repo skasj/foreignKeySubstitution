@@ -1,26 +1,25 @@
 package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.example.foreignKeySubstitution.mapper.baseMapper.CourseMapper;
-import org.example.foreignKeySubstitution.mapper.providerUtils.InsertSQLGenerator;
+import org.example.foreignKeySubstitution.mapper.baseProvider.CourseProvider;
+import org.example.foreignKeySubstitution.mapper.providerUtils.InsertSQLAssembler;
 import org.example.foreignKeySubstitution.modal.entity.Course;
+
+import java.util.List;
 
 @Mapper
 public interface CourseMysqlMapper extends CourseMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    @InsertProvider(type = InsertSQLGenerator.class,method = "insertRecord")
-    int insert(@Param("record") Course record,@Param("tableName") String tableName);
+    @DeleteProvider(type = CourseProvider.class, method = "deleteByIdList")
+    int deleteByIdList(@Param("idList") List<Integer> idList);
 
-    int insertSelective(Course record);
+    @InsertProvider(type = InsertSQLAssembler.class, method = "insertRecord")
+    int insert(@Param("record") Course record, @Param("tableName") String tableName);
 
     @Select("select id,name from course where id = #{record.id}")
     Course selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Course record);
-
-    int updateByPrimaryKey(Course record);
+    @SelectProvider(type = CourseProvider.class, method = "selectByIdList")
+    List<Course> selectByIdList(@Param("idList") List<Integer> idList);
 }
