@@ -7,14 +7,14 @@ import org.example.foreignKeySubstitution.modal.dto.TeacherCourseDTO;
 import org.example.foreignKeySubstitution.modal.entity.Course;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 import org.example.foreignKeySubstitution.modal.entity.TeacherCourse;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class TeacherCourseServiceImpl implements TeacherCourseService{
+@Repository
+public class TeacherCourseDAOImpl implements TeacherCourseDAO {
 
     @Resource
     private TeacherMapper teacherMapper;
@@ -59,9 +59,9 @@ public class TeacherCourseServiceImpl implements TeacherCourseService{
 
     private TeacherCourseDTO teacherCourseConverter(TeacherCourse teacherCourse) {
         TeacherCourseDTO teacherCourseDTO = new TeacherCourseDTO();
-        teacherCourse.setCourseId(teacherCourse.getCourseId());
-        teacherCourse.setId(teacherCourse.getId());
-        teacherCourse.setTeacherId(teacherCourse.getTeacherId());
-        return null;
+        teacherCourseDTO.setCourseId(teacherCourse.getCourseId());
+        teacherCourseDTO.setId(teacherCourse.getId());
+        teacherCourseDTO.setTeacherId(teacherCourse.getTeacherId());
+        return teacherCourseDTO;
     }
 }
