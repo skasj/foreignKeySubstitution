@@ -1,5 +1,6 @@
 package org.example.foreignKeySubstitution.dao.service;
 
+import org.apache.ibatis.annotations.Param;
 import org.example.foreignKeySubstitution.mapper.baseMapper.CourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherCourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
@@ -8,6 +9,7 @@ import org.example.foreignKeySubstitution.modal.entity.Course;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 import org.example.foreignKeySubstitution.modal.entity.TeacherCourse;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -63,5 +65,13 @@ public class TeacherCourseDAOImpl implements TeacherCourseDAO {
         teacherCourseDTO.setId(teacherCourse.getId());
         teacherCourseDTO.setTeacherId(teacherCourse.getTeacherId());
         return teacherCourseDTO;
+    }
+
+    @Override
+    public Integer deleteByIdList(@Param("idList") List<Object> idList) {
+        if (CollectionUtils.isEmpty(idList)) {
+            return 0;
+        }
+        return teacherCourseMapper.deleteByIdList(idList);
     }
 }

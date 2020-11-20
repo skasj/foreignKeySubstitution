@@ -1,5 +1,8 @@
 package org.example.foreignKeySubstitution.dao.service;
 
+import org.apache.ibatis.annotations.Param;
+import org.example.foreignKeySubstitution.annotation.CascadingDelete;
+import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -14,9 +17,12 @@ public class TeacherDAOImpl implements TeacherDAO {
     private TeacherMapper teacherMapper;
 
     // 级联删除
+    @CascadingDeleteList({
+            @CascadingDelete(beanType = TeacherCourseDAO.class, methodName = "deleteByIdList")
+    })
     @Override
-    public int deleteByIdList(List<Object> idList) {
-        if (CollectionUtils.isEmpty(idList)){
+    public Integer deleteByIdList(@Param("idList") List<Object> idList) {
+        if (CollectionUtils.isEmpty(idList)) {
             return 0;
         }
         return teacherMapper.deleteByIdList(idList);

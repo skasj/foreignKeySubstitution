@@ -1,26 +1,19 @@
 package org.example.foreignKeySubstitution.dao.service;
 
-import org.example.foreignKeySubstitution.FKSApplication;
-import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherCourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
+import org.example.foreignKeySubstitution.modal.dto.TeacherCourseDTO;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 import org.example.foreignKeySubstitution.modal.entity.TeacherCourse;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = FKSApplication.class)
-@Transactional
-public class TeacherCourseDAOTest {
+public class TeacherCourseDAOTest extends DAOBaseTest {
 
     private Teacher teacher1;
     private Teacher teacher2;
@@ -48,7 +41,10 @@ public class TeacherCourseDAOTest {
         teacherMapper.insert(teacher2);
         teacherCourseMapper.insert(teacherCourse1);
         teacherCourseMapper.insert(teacherCourse2);
-        Assert.assertEquals(2, teacherCourseDAO.selectByIdList(Arrays.asList(teacherCourse1.getId(), teacherCourse2.getId()))
-                .size());
+        List<TeacherCourseDTO> fromDB = teacherCourseDAO.selectByIdList(
+                Arrays.asList(teacherCourse1.getId(), teacherCourse2.getId()));
+        Assert.assertEquals(2, fromDB.size());
+        Assert.assertTrue(fromDB.stream().anyMatch(o->o.getTeacherName().equals(teacher1.getName())));
+        Assert.assertTrue(fromDB.stream().anyMatch(o->o.getTeacherName().equals(teacher2.getName())));
     }
 }

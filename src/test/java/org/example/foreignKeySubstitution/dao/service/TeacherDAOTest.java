@@ -1,6 +1,5 @@
 package org.example.foreignKeySubstitution.dao.service;
 
-import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherCourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
@@ -12,7 +11,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.util.Arrays;
 
-public class TeacherDAOTest extends MapperBaseTest {
+public class TeacherDAOTest extends DAOBaseTest {
 
     private Teacher teacher1;
     private Teacher teacher2;
@@ -42,10 +41,10 @@ public class TeacherDAOTest extends MapperBaseTest {
         teacherMapper.insert(teacher2);
         teacherCourseMapper.insert(teacherCourse1);
         teacherCourseMapper.insert(teacherCourse2);
-        Assert.assertEquals(2, teacherCourseDAO.selectByIdList(Arrays.asList(teacher1.getId(), teacher2.getId()))
+        Assert.assertEquals(2, teacherCourseDAO.selectByIdList(Arrays.asList(teacherCourse1.getId(), teacherCourse2.getId()))
                 .size());
         teacherDAO.deleteByIdList(Arrays.asList(teacher1.getId(), teacher2.getId()));
-        Assert.assertEquals(0, teacherCourseDAO.selectByIdList(Arrays.asList(teacher1.getId(), teacher2.getId()))
+        Assert.assertEquals(0, teacherMapper.selectByIdList(Arrays.asList(teacher1.getId(), teacher2.getId()))
                 .size());
     }
 }
