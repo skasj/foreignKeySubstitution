@@ -42,7 +42,7 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
         for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
             // 先删除有外键关系的关联表
             Object bean = applicationContext.getBean(cascadingDelete.beanType());
-            if (null == invokeBeanPublicMethod(bean, cascadingDelete.methodName(), pjp.getArgs(), Integer.class)) {
+            if (null == invokeDeleteListMethod(bean, cascadingDelete.methodName(), pjp.getArgs())) {
                 return null;
             }
         }
@@ -56,23 +56,24 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
         return result;
     }
 
-    private Object getArgs(ProceedingJoinPoint pjp) {
-        return null;
-    }
-
-    private Object invokeBeanPublicMethod(Object bean, String methodName, Object[] args, Class<?> returnType) {
-        MethodType mt = MethodType.methodType(returnType,List.class);
+    /**
+     * 注意：此处args只取第一个值作为参数传入，如果有多个参数，需要进行调整
+     * @since 1.0-SNAPSHOT
+     */
+    private Object invokeDeleteListMethod(Object bean, String methodName, Object[] args) {
+        MethodType mt = MethodType.methodType(Integer.class, List.class);
         MethodHandle methodHandle;
         try {
             methodHandle = MethodHandles.lookup()
                     .findVirtual(bean.getClass(), methodName, mt);
         } catch (IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error("method" + methodName + " not found", e);
             return null;
         }
         try {
             return methodHandle.invoke(bean, args[0]);
         } catch (Throwable throwable) {
+            log.error("method" + methodName + " invoke error", throwable);
             throwable.printStackTrace();
             return null;
         }
