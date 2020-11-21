@@ -42,7 +42,7 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
         for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
             // 先删除有外键关系的关联表
             Object bean = applicationContext.getBean(cascadingDelete.beanType());
-            if (null == invokeDeleteMethod(bean.getClass(), cascadingDelete.methodName(), pjp.getArgs())) {
+            if (null == invokeBeanPublicMethod(bean, cascadingDelete.methodName(), pjp.getArgs(), Integer.class)) {
                 return null;
             }
         }
@@ -60,28 +60,20 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
         return null;
     }
 
-    private Object invokeDeleteMethod(Class<?> classOfBean, String methodName, Object... args) {
-        return invokeBeanPublicMethod(classOfBean, methodName, args, Integer.class);
-    }
-
-    private Object invokeSelectMethod(Class<?> classOfBean, String methodName, Object... args) {
-        return invokeBeanPublicMethod(classOfBean, methodName, args, List.class);
-    }
-
-    private Object invokeBeanPublicMethod(Class<?> classOfBean, String methodName, Object[] args, Class<?> returnType) {
-        MethodType mt = MethodType.methodType(returnType);
+    private Object invokeBeanPublicMethod(Object bean, String methodName, Object[] args, Class<?> returnType) {
+        MethodType mt = MethodType.methodType(returnType,List.class);
         MethodHandle methodHandle;
         try {
             methodHandle = MethodHandles.lookup()
-                    .findVirtual(classOfBean, methodName, mt);
+                    .findVirtual(bean.getClass(), methodName, mt);
         } catch (IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
             return null;
         }
         try {
-            return methodHandle.invoke(args);
+            return methodHandle.invoke(bean, args[0]);
         } catch (Throwable throwable) {
-            log.error(String.valueOf(throwable));
+            throwable.printStackTrace();
             return null;
         }
     }
