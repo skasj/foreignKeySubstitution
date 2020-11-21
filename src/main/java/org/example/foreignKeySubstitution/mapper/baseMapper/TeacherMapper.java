@@ -12,6 +12,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
     List<Teacher> selectByIdList(List<Object> idList);
 
-    int deleteByIdList(List<Object> idList);
+    Integer deleteByIdList(List<Object> idList);
+
+    Integer batchUpdateById(List<Teacher> teacherList);
 
 }

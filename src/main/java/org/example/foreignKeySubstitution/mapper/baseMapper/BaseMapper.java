@@ -9,5 +9,5 @@ public interface BaseMapper<E> {
 
     List<E> selectByIdList(List<Object> idList);
 
-    int deleteByIdList(List<Object> idList);
+    Integer deleteByIdList(List<Object> idList);
 }
