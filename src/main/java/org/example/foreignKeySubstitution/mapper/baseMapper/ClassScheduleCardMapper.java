@@ -13,4 +13,6 @@ public interface ClassScheduleCardMapper {
 
     Integer deleteByIdList(List<Object> idList);
 
+    Integer deleteByTeacherCourseIdList(List<Object> idList);
+
 }

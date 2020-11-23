@@ -20,4 +20,10 @@ public interface TeacherCourseMysqlMapper extends TeacherCourseMapper {
 
     @DeleteProvider(type = TeacherCourseProvider.class, method = "deleteByIdList")
     Integer deleteByIdList(@Param("idList") List<Object> idList);
+
+    @DeleteProvider(type = TeacherCourseProvider.class, method = "deleteByTeacherIdList")
+    Integer deleteByTeacherIdList(@Param("idList") List<Object> idList);
+
+    @SelectProvider(type = TeacherCourseProvider.class, method = "selectIdListByTeacherIdList")
+    List<Integer> selectIdListByTeacherIdList(@Param("idList") List<Object> teacherList);
 }

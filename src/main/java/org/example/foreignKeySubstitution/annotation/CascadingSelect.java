@@ -5,5 +5,5 @@ public @interface CascadingSelect {
 
     String methodName();
 
-    Class<?>[] argsClassType();
+    Class<?>[] argsClassType() ;
 }

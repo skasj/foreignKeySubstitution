@@ -18,4 +18,7 @@ public interface ClassScheduleCardMysqlMapper extends ClassScheduleCardMapper {
 
     @DeleteProvider(type = ClassScheduleCardProvider.class, method = "deleteByIdList")
     Integer deleteByIdList(@Param("idList") List<Object> idList);
+
+    @DeleteProvider(type = ClassScheduleCardProvider.class, method = "deleteByTeacherCourseIdList")
+    Integer deleteByTeacherCourseIdList(@Param("idList") List<Object> idList);
 }

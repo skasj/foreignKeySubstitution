@@ -21,15 +21,15 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
     // 级联删除
     @CascadingDeleteList(value = {
-            @CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByIdList")
+            @CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByTeacherIdList")
     })
     Integer deleteByIdList(List<Object> idList);
 
     // 级联删除
-    @CascadingDeleteList(value = {
-            @CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByIdList")
-    }, hasCascadingSelect = true)
-    @CascadingSelect(beanType = TeacherMapper.class, methodName = "selectIdListByNameAndTelephone", argsClassType = {String.class, String.class})
+    @CascadingDeleteList(
+            value = {@CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByTeacherIdList")},
+            selectMethod = @CascadingSelect(beanType = TeacherMapper.class, methodName = "selectIdListByNameAndTelephone", argsClassType = {String.class, String.class})
+    )
     Integer deleteByNameAndTelephone(String name, String telephone);
 
     Integer batchUpdateById(List<Teacher> teacherList);
