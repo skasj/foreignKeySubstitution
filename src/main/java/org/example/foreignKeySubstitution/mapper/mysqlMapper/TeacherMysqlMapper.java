@@ -8,10 +8,11 @@ import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
 import org.example.foreignKeySubstitution.mapper.baseProvider.TeacherProvider;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Mapper
-public interface TeacherMysqlMapper extends TeacherMapper {
+public interface TeacherMysqlMapper extends TeacherMapper, Serializable {
 //    int deleteByPrimaryKey(Integer id);
 
     @InsertProvider(type = TeacherProvider.class, method = "insert")
@@ -23,10 +24,6 @@ public interface TeacherMysqlMapper extends TeacherMapper {
     @SelectProvider(type = TeacherProvider.class, method = "selectByIdList")
     List<Teacher> selectByIdList(@Param("idList") List<Object> idList);
 
-    // 级联删除
-    @CascadingDeleteList({
-            @CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByIdList")
-    })
     @DeleteProvider(type = TeacherProvider.class, method = "deleteByIdList")
     Integer deleteByIdList(@Param("idList") List<Object> idList);
 

@@ -3,8 +3,11 @@ package org.example.foreignKeySubstitution.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.assertj.core.util.Arrays;
+import org.example.foreignKeySubstitution.annotation.Cascading;
 import org.example.foreignKeySubstitution.annotation.CascadingDelete;
 import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
 import org.springframework.beans.BeansException;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
 import java.util.List;
 
 @Slf4j
@@ -35,19 +39,37 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
     /**
      * 递归删除级联对象列表
      */
-    @Around(value = "@annotation(cascadingDeleteList)")
-    public Object process(ProceedingJoinPoint pjp, CascadingDeleteList cascadingDeleteList) throws RuntimeException {
+//    @Around(value = "@annotation(cascadingDeleteList)")
+    @Around(value = "execution(* org.example.foreignKeySubstitution.mapper..delete*(..))")
+    public Object process(ProceedingJoinPoint pjp) throws RuntimeException {
         Object result = null;
-        // 先获得idList
-        for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
-            // 先删除有外键关系的关联表
-            Object bean = applicationContext.getBean(cascadingDelete.beanType());
-            if (null == invokeDeleteListMethod(bean, cascadingDelete.methodName(), pjp.getArgs())) {
-                return null;
+        // 必须实现的Mapper接口必须要有CascadingDelete注解
+        Signature pjpSignature = pjp.getSignature();
+        Class<?>[] interfaceList = pjpSignature.getDeclaringType().getInterfaces();
+        if (!Arrays.isNullOrEmpty(interfaceList)) {
+            OK:
+            for (Class<?> interfaceClass : interfaceList) {
+                if (null != interfaceClass.getAnnotation(Cascading.class)) {
+                    for (Method method : interfaceClass.getMethods()) {
+                        CascadingDeleteList cascadingDeleteList;
+                        if (method.getName()
+                                .equals(pjpSignature.getName())
+                                && null != (cascadingDeleteList = method.getAnnotation(CascadingDeleteList.class))) {
+                            for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
+                                // 先删除有外键关系的关联表
+                                Object bean = applicationContext.getBean(cascadingDelete.beanType());
+                                if (null == invokeDeleteListMethod(bean, cascadingDelete.methodName(), pjp.getArgs())) {
+                                    return null;
+                                }
+                            }
+                            break OK;
+                        }
+                    }
+                }
             }
         }
         try {
-            // 再删除本表
+            // 运行mapper方法自己的删除语句
             result = pjp.proceed();
         } catch (
                 Throwable throwable) {
