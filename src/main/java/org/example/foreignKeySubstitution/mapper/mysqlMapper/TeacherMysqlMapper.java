@@ -1,6 +1,9 @@
 package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 
 import org.apache.ibatis.annotations.*;
+import org.example.foreignKeySubstitution.annotation.CascadingDelete;
+import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
+import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherCourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseMapper.TeacherMapper;
 import org.example.foreignKeySubstitution.mapper.baseProvider.TeacherProvider;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
@@ -20,6 +23,10 @@ public interface TeacherMysqlMapper extends TeacherMapper {
     @SelectProvider(type = TeacherProvider.class, method = "selectByIdList")
     List<Teacher> selectByIdList(@Param("idList") List<Object> idList);
 
+    // 级联删除
+    @CascadingDeleteList({
+            @CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByIdList")
+    })
     @DeleteProvider(type = TeacherProvider.class, method = "deleteByIdList")
     Integer deleteByIdList(@Param("idList") List<Object> idList);
 

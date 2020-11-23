@@ -1,5 +1,7 @@
 package org.example.foreignKeySubstitution.mapper.baseMapper;
 
+import org.example.foreignKeySubstitution.annotation.CascadingDelete;
+import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
 import java.util.List;
