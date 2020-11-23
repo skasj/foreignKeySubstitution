@@ -6,7 +6,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.assertj.core.util.Arrays;
 import org.example.foreignKeySubstitution.annotation.Cascading;
 import org.example.foreignKeySubstitution.annotation.CascadingDelete;
 import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
@@ -39,35 +38,10 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
     /**
      * 递归删除级联对象列表
      */
-//    @Around(value = "@annotation(cascadingDeleteList)")
     @Around(value = "execution(* org.example.foreignKeySubstitution.mapper..delete*(..))")
     public Object process(ProceedingJoinPoint pjp) throws RuntimeException {
         Object result = null;
-        // 必须实现的Mapper接口必须要有CascadingDelete注解
-        Signature pjpSignature = pjp.getSignature();
-        Class<?>[] interfaceList = pjpSignature.getDeclaringType().getInterfaces();
-        if (!Arrays.isNullOrEmpty(interfaceList)) {
-            OK:
-            for (Class<?> interfaceClass : interfaceList) {
-                if (null != interfaceClass.getAnnotation(Cascading.class)) {
-                    for (Method method : interfaceClass.getMethods()) {
-                        CascadingDeleteList cascadingDeleteList;
-                        if (method.getName()
-                                .equals(pjpSignature.getName())
-                                && null != (cascadingDeleteList = method.getAnnotation(CascadingDeleteList.class))) {
-                            for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
-                                // 先删除有外键关系的关联表
-                                Object bean = applicationContext.getBean(cascadingDelete.beanType());
-                                if (null == invokeDeleteListMethod(bean, cascadingDelete.methodName(), pjp.getArgs())) {
-                                    return null;
-                                }
-                            }
-                            break OK;
-                        }
-                    }
-                }
-            }
-        }
+        findCascadingDeleteMethodAndInvoke(pjp);
         try {
             // 运行mapper方法自己的删除语句
             result = pjp.proceed();
@@ -76,13 +50,53 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
             throwable.printStackTrace();
         }
         return result;
+
     }
 
     /**
+     * 寻找级联删除方法，如果找到，就调用并删除
+     */
+    private void findCascadingDeleteMethodAndInvoke(ProceedingJoinPoint pjp) {
+        Signature pjpSignature = pjp.getSignature();
+        Class<?>[] interfaceList = pjpSignature.getDeclaringType()
+                .getInterfaces();
+        if (interfaceList.length == 0) {
+            return;
+        }
+        for (Class<?> interfaceClass : interfaceList) {
+            // 匹配接口：级联删除接口必须带有@Cascading注解
+            if (null == interfaceClass.getAnnotation(Cascading.class)) {
+                continue;
+            }
+            for (Method method : interfaceClass.getMethods()) {
+                // 匹配方法：此处不需要匹配参数类型，因为入参明确只有一个——idList，所以不用考虑重载
+                if (method.getName().equals(pjpSignature.getName())) {
+                    if (invokeCascadingDeleteMethodList(pjp, method))
+                        return;
+                }
+            }
+        }
+    }
+
+    private boolean invokeCascadingDeleteMethodList(ProceedingJoinPoint pjp, Method method) {
+        CascadingDeleteList cascadingDeleteList = method.getAnnotation(CascadingDeleteList.class);
+        if (null != cascadingDeleteList && cascadingDeleteList.value().length != 0) {
+            for (CascadingDelete cascadingDelete : cascadingDeleteList.value()) {
+                invokeDeleteListMethod(applicationContext.getBean(cascadingDelete.beanType()),
+                        cascadingDelete.methodName(), pjp.getArgs());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 这里只执行带有如下特征符号的方法 Integer bean.methodName(List)
      * 注意：此处args只取第一个值作为参数传入，如果有多个参数，需要进行调整
+     *
      * @since 1.0-SNAPSHOT
      */
-    private Object invokeDeleteListMethod(Object bean, String methodName, Object[] args) {
+    private void invokeDeleteListMethod(Object bean, String methodName, Object[] args) {
         MethodType mt = MethodType.methodType(Integer.class, List.class);
         MethodHandle methodHandle;
         try {
@@ -90,16 +104,14 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
                     .findVirtual(bean.getClass(), methodName, mt);
         } catch (IllegalAccessException | NoSuchMethodException e) {
             log.error("method" + methodName + " not found", e);
-            return null;
+            return;
         }
         try {
-            return methodHandle.invoke(bean, args[0]);
+            methodHandle.invoke(bean, args[0]);
         } catch (Throwable throwable) {
             log.error("method" + methodName + " invoke error", throwable);
             throwable.printStackTrace();
-            return null;
         }
     }
-
 
 }

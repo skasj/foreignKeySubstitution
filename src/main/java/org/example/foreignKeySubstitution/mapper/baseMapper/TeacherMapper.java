@@ -7,7 +7,7 @@ import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
 import java.util.List;
 
-@Cascading
+//@Cascading
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
     int insert(Teacher record);
