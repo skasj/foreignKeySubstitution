@@ -5,8 +5,6 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.foreignKeySubstitution.annotation.TableColumn;
-import org.example.foreignKeySubstitution.annotation.TableName;
 
 /**
  * class

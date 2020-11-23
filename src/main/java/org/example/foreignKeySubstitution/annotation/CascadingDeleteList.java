@@ -8,4 +8,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface CascadingDeleteList {
     CascadingDelete[] value() default {};
+
+    boolean hasCascadingSelect() default false;
 }

@@ -10,5 +10,4 @@ public @interface CascadingDelete {
 
     String methodName();
 
-    boolean directDelete() default true;
 }
