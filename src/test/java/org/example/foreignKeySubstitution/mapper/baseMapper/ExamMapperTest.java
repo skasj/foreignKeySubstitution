@@ -1,4 +1,4 @@
-package org.example.foreignKeySubstitution.mapper.mysqlMapper;
+package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.constants.ExamRequestType;
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;

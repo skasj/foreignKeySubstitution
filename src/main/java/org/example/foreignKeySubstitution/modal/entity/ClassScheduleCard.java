@@ -3,25 +3,24 @@ package org.example.foreignKeySubstitution.modal.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * class
  * @author ydy
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClassScheduleCard implements Serializable {
     private Integer id;
 
     /**
-     * 上课日期
-     */
-    private Date course_date;
-
-    /**
      * 上课时间
      */
-    private Date course_time;
+    private Date course_datetime;
 
     private Integer teacher_course_id;
 

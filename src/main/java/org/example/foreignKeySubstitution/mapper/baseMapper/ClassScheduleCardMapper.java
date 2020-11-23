@@ -2,17 +2,15 @@ package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.modal.entity.ClassScheduleCard;
 
+import java.util.List;
+
 
 public interface ClassScheduleCardMapper {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(ClassScheduleCard record);
 
-    int insertSelective(ClassScheduleCard record);
+    List<ClassScheduleCard> selectByIdList(List<Object> id);
 
-    ClassScheduleCard selectByPrimaryKey(Integer id);
+    Integer deleteByIdList(List<Object> idList);
 
-    int updateByPrimaryKeySelective(ClassScheduleCard record);
-
-    int updateByPrimaryKey(ClassScheduleCard record);
 }

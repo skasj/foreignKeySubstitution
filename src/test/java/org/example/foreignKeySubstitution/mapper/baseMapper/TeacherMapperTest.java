@@ -1,4 +1,4 @@
-package org.example.foreignKeySubstitution.mapper.mysqlMapper;
+package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.dao.service.DAOBaseTest;
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
-public class TeacherMysqlMapperTest extends DAOBaseTest {
+public class TeacherMapperTest extends DAOBaseTest {
 
     private Teacher record1;
     private Teacher record2;

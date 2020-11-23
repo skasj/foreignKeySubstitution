@@ -1,4 +1,4 @@
-package org.example.foreignKeySubstitution.mapper.mysqlMapper;
+package org.example.foreignKeySubstitution.mapper.baseMapper;
 
 import org.example.foreignKeySubstitution.mapper.MapperBaseTest;
 import org.example.foreignKeySubstitution.mapper.baseMapper.CourseMapper;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
-public class CourseMysqlMapperTest extends MapperBaseTest {
+public class CourseMapperTest extends MapperBaseTest {
 
     private Course record1;
     private Course record2;
