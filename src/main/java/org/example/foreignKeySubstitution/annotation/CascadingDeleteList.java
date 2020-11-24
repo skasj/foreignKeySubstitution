@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 public @interface CascadingDeleteList {
     CascadingDelete[] value() default {};
 
-    CascadingSelect selectMethod() default @CascadingSelect(beanType = Object.class, methodName = "null", argsClassType = {});
+    CascadingPreSelectBeforeDelete selectMethod() default @CascadingPreSelectBeforeDelete(beanType = Object.class, methodName = "null", argsClassType = {});
 }

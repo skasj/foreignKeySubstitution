@@ -3,7 +3,7 @@ package org.example.foreignKeySubstitution.mapper.baseMapper;
 import org.example.foreignKeySubstitution.annotation.Cascading;
 import org.example.foreignKeySubstitution.annotation.CascadingDelete;
 import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
-import org.example.foreignKeySubstitution.annotation.CascadingSelect;
+import org.example.foreignKeySubstitution.annotation.CascadingPreSelectBeforeDelete;
 import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     // 级联删除
     @CascadingDeleteList(
             value = {@CascadingDelete(beanType = TeacherCourseMapper.class, methodName = "deleteByTeacherIdList")},
-            selectMethod = @CascadingSelect(beanType = TeacherMapper.class, methodName = "selectIdListByNameAndTelephone", argsClassType = {String.class, String.class})
+            selectMethod = @CascadingPreSelectBeforeDelete(beanType = TeacherMapper.class, methodName = "selectIdListByNameAndTelephone", argsClassType = {String.class, String.class})
     )
     Integer deleteByNameAndTelephone(String name, String telephone);
 

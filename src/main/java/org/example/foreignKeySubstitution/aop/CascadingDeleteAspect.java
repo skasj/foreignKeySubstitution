@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.example.foreignKeySubstitution.annotation.Cascading;
 import org.example.foreignKeySubstitution.annotation.CascadingDelete;
 import org.example.foreignKeySubstitution.annotation.CascadingDeleteList;
-import org.example.foreignKeySubstitution.annotation.CascadingSelect;
+import org.example.foreignKeySubstitution.annotation.CascadingPreSelectBeforeDelete;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -95,7 +95,7 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
     }
 
     private Object[] getArgs(ProceedingJoinPoint pjp, CascadingDeleteList cascadingDeleteList) {
-        CascadingSelect selectMethod = cascadingDeleteList.selectMethod();
+        CascadingPreSelectBeforeDelete selectMethod = cascadingDeleteList.selectMethod();
         List<?> idList = null;
         boolean isSelectMethodDefined = selectMethod.beanType() != Object.class;
         if (isSelectMethodDefined) {

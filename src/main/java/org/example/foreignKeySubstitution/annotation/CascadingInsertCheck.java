@@ -1,9 +1,7 @@
 package org.example.foreignKeySubstitution.annotation;
 
-public @interface CascadingSelect {
+public @interface CascadingInsertCheck {
     Class<?> beanType();
-
     String methodName();
-
-    Class<?>[] argsClassType() ;
+    String fieldName();
 }

@@ -26,4 +26,7 @@ public interface TeacherCourseMysqlMapper extends TeacherCourseMapper {
 
     @SelectProvider(type = TeacherCourseProvider.class, method = "selectIdListByTeacherIdList")
     List<Integer> selectIdListByTeacherIdList(@Param("idList") List<Object> teacherList);
+
+    @InsertProvider(type = TeacherCourseProvider.class, method = "insertList")
+    Integer insertList(@Param("recordList") List<TeacherCourse> teacherCourseList);
 }
