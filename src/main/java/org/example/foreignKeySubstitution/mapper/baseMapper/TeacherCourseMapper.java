@@ -1,6 +1,6 @@
 package org.example.foreignKeySubstitution.mapper.baseMapper;
 
-import org.example.foreignKeySubstitution.annotation.*;
+import org.example.foreignKeySubstitution.annotation.cascading.*;
 import org.example.foreignKeySubstitution.modal.entity.TeacherCourse;
 
 import java.util.List;
