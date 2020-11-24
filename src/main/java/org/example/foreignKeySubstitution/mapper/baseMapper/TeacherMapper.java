@@ -34,4 +34,6 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
     Integer batchUpdateById(List<Teacher> teacherList);
 
+    Integer countByIdList(List<Object> idList);
+
 }

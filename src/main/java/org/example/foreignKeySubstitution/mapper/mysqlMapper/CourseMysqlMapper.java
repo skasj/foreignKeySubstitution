@@ -3,7 +3,6 @@ package org.example.foreignKeySubstitution.mapper.mysqlMapper;
 import org.apache.ibatis.annotations.*;
 import org.example.foreignKeySubstitution.mapper.baseMapper.CourseMapper;
 import org.example.foreignKeySubstitution.mapper.baseProvider.CourseProvider;
-import org.example.foreignKeySubstitution.mapper.providerUtils.InsertSQLAssembler;
 import org.example.foreignKeySubstitution.modal.entity.Course;
 
 import java.util.List;
@@ -22,4 +21,7 @@ public interface CourseMysqlMapper extends CourseMapper {
 
     @SelectProvider(type = CourseProvider.class, method = "selectByIdList")
     List<Course> selectByIdList(@Param("idList") List<Integer> idList);
+
+    @SelectProvider(type = CourseProvider.class, method = "countByIdList")
+    Integer countByIdList(@Param("idList") List<Object> idList);
 }

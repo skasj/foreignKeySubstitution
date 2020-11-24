@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface CascadingDeleteList {
-    CascadingDelete[] value() default {};
+    CascadingDelete[] value() ;
 
     CascadingPreSelectBeforeDelete selectMethod() default @CascadingPreSelectBeforeDelete(beanType = Object.class, methodName = "null", argsClassType = {});
 }

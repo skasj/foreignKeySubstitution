@@ -11,24 +11,27 @@ import org.example.foreignKeySubstitution.modal.entity.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TeacherProvider implements ProviderMethodResolver {
 
-    private final String tableName = "teacher";
-    private final Class<?> javaType = Teacher.class;
+    private static final String TABLE_NAME = "teacher";
+    private static final Class<?> JAVA_TYPE = Teacher.class;
 
     public String insert(@Param("record") Teacher record) {
-        return InsertSQLAssembler.insertRecord(record, tableName);
+        return InsertSQLAssembler.insertRecord(record, TABLE_NAME);
     }
 
     public String selectByIdList(@Param("idList") List<Object> idList) {
-        return SelectSQLAssembler.selectByIdList(idList, tableName, javaType);
+        return SelectSQLAssembler.selectByIdList(idList, TABLE_NAME, JAVA_TYPE);
     }
 
     public String deleteByIdList(@Param("idList") List<Object> idList) {
-        return DeleteSQLAssembler.deleteByIdList(idList, tableName);
+        return DeleteSQLAssembler.deleteByIdList(idList, TABLE_NAME);
+    }
+
+    public String countByIdList(@Param("idList") List<Object> idList) {
+        return SelectSQLAssembler.countByIdList(idList, TABLE_NAME);
     }
 
     /**
@@ -62,7 +65,7 @@ public class TeacherProvider implements ProviderMethodResolver {
     public String batchUpdateById(@Param("teacherList") List<Teacher> teacherList) {
         List<String> updateSQLList = new ArrayList<>();
         IntStream.range(0, teacherList.size())
-                .forEach(i -> updateSQLList.add(new SQL().UPDATE(tableName)
+                .forEach(i -> updateSQLList.add(new SQL().UPDATE(TABLE_NAME)
                         .SET("name=#{teacherList[" + i + "].name}")
                         .WHERE("id=#{teacherList[" + i + "].id}")
                         .toString()));

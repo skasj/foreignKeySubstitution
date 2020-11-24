@@ -5,8 +5,10 @@ import org.apache.ibatis.jdbc.SQL;
 import org.example.foreignKeySubstitution.utils.NameTransferUitl;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class SelectSQLAssembler {
     public static String selectByIdList(List<Object> idList, String tableName, Class<?> resultType) {
@@ -19,6 +21,17 @@ public class SelectSQLAssembler {
                 .toArray(String[]::new))
                 .FROM(tableName)
                 .WHERE("id in ('" + joiner.join(idList) + "')")
+                .toString();
+    }
+
+    public static String countByIdList(List<Object> idList,String tableName) {
+        List<String> idParamString = new ArrayList<>();
+        Joiner joiner = Joiner.on(",");
+        IntStream.range(0, idList.size())
+                .forEach(o -> idParamString.add(String.format("#{idList[%d]}", o)));
+        return new SQL().SELECT("count(1)")
+                .FROM(tableName)
+                .WHERE("id in (" + joiner.join(idParamString) + ")")
                 .toString();
     }
 }

@@ -40,17 +40,13 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
      */
     @Around(value = "execution(* org.example.foreignKeySubstitution.mapper..delete*(..))")
     public Object process(ProceedingJoinPoint pjp) {
-        Object result = null;
         findCascadingDeleteMethodAndInvoke(pjp);
         try {
-            // 运行mapper方法自己的删除语句
-            result = pjp.proceed();
-        } catch (
-                Throwable throwable) {
+            return pjp.proceed();
+        } catch (Throwable throwable) {
             throwable.printStackTrace();
+            return null;
         }
-        return result;
-
     }
 
     /**
@@ -143,7 +139,7 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
                         result = methodHandle.invoke(bean, args[0], args[1], args[2], args[3], args[4]);
                         break;
                     default:
-                        throw new RuntimeException("parameter too long, need extend invokeMethodWithArgList method");
+                        throw new IndexOutOfBoundsException("parameter too long, need extend invokeMethodWithArgList method");
                 }
             }
         } catch (Throwable throwable) {

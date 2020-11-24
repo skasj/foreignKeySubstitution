@@ -13,4 +13,5 @@ public interface CourseMapper {
 
     List<Course> selectByIdList(List<Integer> idList);
 
+    Integer countByIdList(List<Object> idList);
 }

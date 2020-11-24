@@ -31,4 +31,7 @@ public interface TeacherMysqlMapper extends TeacherMapper, Serializable {
 
     @UpdateProvider(type = TeacherProvider.class, method = "batchUpdateById")
     Integer batchUpdateById(@Param("teacherList") List<Teacher> teacherList);
+
+    @SelectProvider(type = TeacherProvider.class, method = "countByIdList")
+    Integer countByIdList(@Param("idList") List<Object> idList);
 }

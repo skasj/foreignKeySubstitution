@@ -17,8 +17,8 @@ public interface TeacherCourseMapper extends BaseMapper<TeacherCourse> {
     List<Integer> selectIdListByTeacherIdList(List<Object> teacherList);
 
     @CascadingInsertCheckList({
-            @CascadingInsertCheck(beanType = TeacherMapper.class,methodName = "selectByIdList",fieldName = "teacherId"),
-            @CascadingInsertCheck(beanType = CourseMapper.class,methodName = "selectByIdList",fieldName = "courseId")
+            @CascadingInsertCheck(beanType = TeacherMapper.class,methodName = "countByIdList",fieldName = "teacherId"),
+            @CascadingInsertCheck(beanType = CourseMapper.class,methodName = "countByIdList",fieldName = "courseId")
     })
     Integer insertList(List<TeacherCourse> teacherCourseList);
 }
