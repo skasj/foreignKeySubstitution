@@ -12,7 +12,11 @@ import org.example.foreignKeySubstitution.annotation.cascading.CascadingDeleteLi
 import org.example.foreignKeySubstitution.annotation.cascading.CascadingPreSelectBeforeDelete;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.MethodHandle;
@@ -42,11 +46,28 @@ public class CascadingDeleteAspect implements ApplicationContextAware {
      */
     @Around(value = "execution(* org.example.foreignKeySubstitution.mapper..delete*(..))")
     public Object process(ProceedingJoinPoint pjp) throws Throwable {
-        Method method = findCascadingDeleteMethod(pjp);
-        if (null != method) {
-            invokeCascadingDeleteMethodList(pjp, method);
+        DataSourceTransactionManager transactionManager = applicationContext.getBean(
+                DataSourceTransactionManager.class);
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        // 事物隔离级别，开启新事务，这样会比较安全些。
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
+        try {
+            /* --------- 逻辑代码 --------------*/
+            Method method = findCascadingDeleteMethod(pjp);
+            if (null != method) {
+                invokeCascadingDeleteMethodList(pjp, method);
+            }
+            Object result = pjp.proceed();
+            /* --------- 逻辑代码 --------------*/
+            // 提交事务
+            transactionManager.commit(status);
+            return result;
+        } catch (Throwable throwable) {
+            transactionManager.rollback(status);
+            log.error("事务提交失败，进行回滚");
+            throw throwable;
         }
-        return pjp.proceed();
     }
 
     /**
